@@ -26,7 +26,7 @@ const server = app.listen(PORT, () => {
     console.log(`🚀 Server is running on port ${PORT}`);
 });
 
-// Database එකට සම්බන්ධ වීම (non-blocking)
+//  connect Database  (non-blocking)
 mongoose.connect(process.env.MONGODB_URI)
     .then(() => console.log("✅ MongoDB Connected Successfully!"))
     .catch(err => console.log("❌ Connection Error: ", err));
