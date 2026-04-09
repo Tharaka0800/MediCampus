@@ -1,5 +1,6 @@
 import { useState } from 'react';
 import { useProfile } from '../context/ProfileContext';
+import HealthChatbot from './HealthChatbot';
 
 // ── If using react-router-dom, uncomment:
 import { useNavigate } from 'react-router-dom';
@@ -514,6 +515,7 @@ const CERTS = [
 ];
 const NAV = [
   { icon: '🏠', label: 'Dashboard',    id: 'dashboard' },
+  { icon: '🤖', label: 'MediBot AI',   id: 'medibot' },
   { icon: '👤', label: 'Health Profile', id: 'profile' },
   { icon: '🗓️', label: 'Appointments',  id: 'appointments', badge: 2 },
   { icon: '📋', label: 'Medical History', id: 'history' },
@@ -897,6 +899,11 @@ export default function StudentHealthDashboard() {
                   ))}
                 </div>
               </div>
+            )}
+
+            {/* ══════════ MEDIBOT AI ══════════ */}
+            {activePage === 'medibot' && (
+              <HealthChatbot profile={profile} />
             )}
 
           </div>
