@@ -227,6 +227,6 @@ This project is for educational purposes as part of a university ITPM project.
 
 This is a student project. Feel free to suggest improvements or contribute to the development.
 
----
 
 **MediCampus** - Transforming healthcare for the modern student.
+
