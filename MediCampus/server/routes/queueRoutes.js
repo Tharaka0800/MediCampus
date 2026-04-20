@@ -119,6 +119,17 @@ router.put('/:id/skip', async (req, res) => {
     }
 });
 
+// PUT: Start Consultation explicitly
+router.put('/:id/start', async (req, res) => {
+    try {
+        const entry = await Queue.findByIdAndUpdate(req.params.id, { status: 'in-consultation' }, { new: true });
+        if (!entry) return res.status(404).json({ message: 'Queue entry not found.' });
+        res.status(200).json({ message: 'Started consultation', entry });
+    } catch (error) {
+        res.status(500).json({ message: 'Server Error', error: error.message });
+    }
+});
+
 // GET: Search queue by student name/ID
 router.get('/search', async (req, res) => {
     try {

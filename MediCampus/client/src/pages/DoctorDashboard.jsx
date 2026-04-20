@@ -71,12 +71,17 @@ export default function DoctorDashboard() {
     axios.get(`${API}/queue/live/${doctor._id}`).then(r => setQueue(r.data));
   };
 
-  const startConsultation = (apt) => {
+  const startConsultation = async (apt, queueId) => {
     setSelectedPatient(apt);
     setView('consult');
     setDiagForm({ symptoms: '', condition: '', severity: 'mild', notes: '' });
     setPrescriptions([{ medication: '', dosage: '', frequency: '', duration: '' }]);
     setCertForm({ certificateType: 'medical-leave', validFrom: '', validTo: '', reason: '' });
+    
+    if (queueId) {
+      await axios.put(`${API}/queue/${queueId}/start`).catch(() => {});
+      axios.get(`${API}/queue/live/${doctor._id}`).then(r => setQueue(r.data));
+    }
   };
 
   const addPrescription = () => setPrescriptions(p => [...p, { medication: '', dosage: '', frequency: '', duration: '' }]);
@@ -188,7 +193,7 @@ export default function DoctorDashboard() {
                       )}
                       <button onClick={() => {
                         const apt = appointments.find(a => a.studentId?._id === q.studentId?._id || a.studentId === q.studentId?._id);
-                        if (apt) startConsultation(apt);
+                        if (apt) startConsultation(apt, q._id);
                       }} className="px-3 py-1.5 bg-teal-bg text-teal text-xs font-semibold rounded-lg hover:bg-green-100">🩺 Consult</button>
                     </div>
                   </div>
