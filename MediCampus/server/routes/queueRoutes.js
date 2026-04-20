@@ -24,6 +24,9 @@ router.get('/live/:doctorId', async (req, res) => {
 // GET: Public queue display (all doctors)
 router.get('/public', async (req, res) => {
     try {
+        const Doctor = require('../models/Doctor');
+        const doctors = await Doctor.find({ isActive: true });
+        
         const today = new Date(); today.setHours(0,0,0,0);
         const queue = await Queue.find({
             date: { $gte: today },
@@ -35,19 +38,29 @@ router.get('/public', async (req, res) => {
 
         // Group by doctor
         const grouped = {};
+        
+        // Initialize all active doctors so they always show on the board
+        doctors.forEach(d => {
+            grouped[d._id.toString()] = {
+                doctor: {
+                    _id: d._id,
+                    name: d.name,
+                    specialization: d.specialization,
+                    room: d.room
+                },
+                currentToken: null,
+                waitingCount: 0,
+                queue: []
+            };
+        });
+
         queue.forEach(q => {
             const dId = q.doctorId?._id?.toString();
-            if (!grouped[dId]) {
-                grouped[dId] = {
-                    doctor: q.doctorId,
-                    currentToken: null,
-                    waitingCount: 0,
-                    queue: []
-                };
+            if (grouped[dId]) {
+                if (q.status === 'in-consultation') grouped[dId].currentToken = q.tokenNumber;
+                if (q.status === 'waiting') grouped[dId].waitingCount++;
+                grouped[dId].queue.push(q);
             }
-            if (q.status === 'in-consultation') grouped[dId].currentToken = q.tokenNumber;
-            if (q.status === 'waiting') grouped[dId].waitingCount++;
-            grouped[dId].queue.push(q);
         });
 
         res.status(200).json(Object.values(grouped));
