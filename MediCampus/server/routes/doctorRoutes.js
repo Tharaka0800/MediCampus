@@ -19,7 +19,6 @@ router.post('/login', async (req, res) => {
 });
 
 
-//commit
 // POST: Create Doctor
 router.post('/', async (req, res) => {
     try {
