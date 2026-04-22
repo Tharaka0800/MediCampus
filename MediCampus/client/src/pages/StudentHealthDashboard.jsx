@@ -882,7 +882,7 @@ export default function StudentHealthDashboard() {
                         <div className="shd-cert-name">Medical Certificate — {new Date(c.validFrom).toLocaleDateString('en', { day: 'numeric', month: 'short', year: 'numeric' })}</div>
                         <div className="shd-cert-date">Issued by {c.doctorId?.name || 'Doctor'} • Hash: {c.verificationHash?.slice(0, 8)}...</div>
                       </div>
-                      <button className="shd-dl-btn" onClick={() => alert(`To verify this certificate, ask your professor to go to /verify-certificate and enter code: ${c.verificationHash}`)}>⬇ Download PDF (Static)</button>
+                      <button className="shd-dl-btn" onClick={() => window.open(`/certificate/${c._id}/download`, '_blank')}>⬇ Download PDF</button>
                     </div>
                   ))}
                 </div>
