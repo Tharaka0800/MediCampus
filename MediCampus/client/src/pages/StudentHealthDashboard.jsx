@@ -1,9 +1,12 @@
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
 import { useProfile } from '../context/ProfileContext';
 import HealthChatbot from './HealthChatbot';
+import axios from 'axios';
 
 // ── If using react-router-dom, uncomment:
 import { useNavigate } from 'react-router-dom';
+
+const API = 'http://localhost:5000/api';
 
 const styles = `
   @import url('https://fonts.googleapis.com/css2?family=DM+Serif+Display:ital@0;1&family=DM+Sans:wght@300;400;500;600&display=swap');
@@ -528,6 +531,15 @@ export default function StudentHealthDashboard() {
   const [activePage, setActivePage] = useState('dashboard');
   const [notifs, setNotifs] = useState(NOTIFICATIONS);
   const { profile, logout, deleteProfile } = useProfile();
+  const [certificates, setCertificates] = useState([]);
+
+  useEffect(() => {
+    if (profile?._id) {
+      axios.get(`${API}/certificates/student/${profile._id}`)
+        .then(r => setCertificates(r.data))
+        .catch(() => {});
+    }
+  }, [profile]);
 
   const handleLogout = () => {
     logout();
@@ -861,16 +873,16 @@ export default function StudentHealthDashboard() {
                   <span style={{fontSize:12, color:'var(--muted)'}}>Only downloadable by you</span>
                 </div>
                 <div className="shd-card-body">
-                  {CERTS.length === 0 ? (
+                  {certificates.length === 0 ? (
                     <div className="shd-empty"><div className="shd-empty-icon">📄</div><p>No certificates available yet.</p></div>
-                  ) : CERTS.map((c, i) => (
+                  ) : certificates.map((c, i) => (
                     <div className="shd-cert-item" key={i}>
                       <div className="shd-cert-icon">📄</div>
                       <div className="shd-cert-info">
-                        <div className="shd-cert-name">{c.name}</div>
-                        <div className="shd-cert-date">{c.date}</div>
+                        <div className="shd-cert-name">Medical Certificate — {new Date(c.validFrom).toLocaleDateString('en', { day: 'numeric', month: 'short', year: 'numeric' })}</div>
+                        <div className="shd-cert-date">Issued by {c.doctorId?.name || 'Doctor'} • Hash: {c.verificationHash?.slice(0, 8)}...</div>
                       </div>
-                      <button className="shd-dl-btn">⬇ Download PDF</button>
+                      <button className="shd-dl-btn" onClick={() => alert(`To verify this certificate, ask your professor to go to /verify-certificate and enter code: ${c.verificationHash}`)}>⬇ Download PDF (Static)</button>
                     </div>
                   ))}
                 </div>
