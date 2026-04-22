@@ -62,23 +62,27 @@ export default function PublicQueueDisplay() {
             {/* Waiting List */}
             <div className="p-6">
               <div className="text-white/50 text-xs uppercase tracking-widest font-semibold mb-3">WAITING ({group.waitingCount})</div>
-              <div className="flex flex-wrap gap-2">
+              <div className="flex flex-wrap gap-3">
                 {group.queue
                   .filter(q => q.status === 'waiting')
                   .slice(0, 12)
-                  .map(q => (
+                  .map((q, idx) => (
                     <div key={q._id}
-                      className={`w-12 h-12 rounded-xl flex items-center justify-center font-bold text-lg ${
+                      className={`w-20 pt-3 pb-2 rounded-2xl flex flex-col items-center justify-center border backdrop-blur-sm ${
                         q.priority === 'emergency'
-                          ? 'bg-red-500/20 text-red-400 border border-red-500/30 animate-pulse'
-                          : 'bg-white/10 text-white/70 border border-white/10'
+                          ? 'bg-red-500/20 text-red-400 border-red-500/40 shadow-[0_0_20px_rgba(239,68,68,0.4)] animate-pulse'
+                          : 'bg-white/5 text-white/90 border-white/10 shadow-lg hover:border-white/20 transition-colors'
                       }`}>
-                      {q.tokenNumber}
+                      <span className="font-serif font-bold text-2xl leading-none">{q.tokenNumber}</span>
+                      <span className={`text-[10px] mt-2 uppercase tracking-wider font-bold ${q.priority==='emergency' ? 'text-red-300' : 'text-teal-300 opacity-80'}`}>
+                        ~{(idx + 1) * 15} MIN
+                      </span>
                     </div>
                   ))}
               </div>
-              <div className="mt-4 text-white/40 text-xs">
-                ⏳ Estimated wait: ~{group.waitingCount * 15} minutes
+              <div className="mt-5 text-white/40 text-xs flex items-center justify-between">
+                <div><span>🩺</span> Calculating 15m avg per patient</div>
+                <div>Queue clearing in: ~{group.waitingCount * 15} minutes</div>
               </div>
             </div>
           </div>

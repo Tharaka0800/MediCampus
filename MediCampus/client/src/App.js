@@ -11,6 +11,7 @@ import CertificateVerify from './pages/CertificateVerify';
 import EventPortal from './pages/EventPortal';
 import EmergencyCenter from './pages/EmergencyCenter';
 import { ProfileProvider } from './context/ProfileContext';
+import CertificateDocument from './pages/CertificateDocument';
 import './App.css';
 
 function App() {
@@ -23,6 +24,7 @@ function App() {
             <Route path="/" element={<Login />} />
             <Route path="/create-profile" element={<CreateProfile />} />
             <Route path="/dashboard" element={<StudentHealthDashboard />} />
+            <Route path="/certificate/:id/download" element={<CertificateDocument />} />
             <Route path="/book-appointment" element={<BookAppointment />} />
             <Route path="/events" element={<EventPortal />} />
             <Route path="/emergency" element={<EmergencyCenter />} />
