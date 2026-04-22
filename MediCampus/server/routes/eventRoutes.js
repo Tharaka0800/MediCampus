@@ -47,6 +47,28 @@ router.get('/:id', async (req, res) => {
     }
 });
 
+// PUT: Update Event
+router.put('/:id', async (req, res) => {
+    try {
+        const event = await HealthEvent.findByIdAndUpdate(req.params.id, req.body, { new: true });
+        if (!event) return res.status(404).json({ message: 'Event not found.' });
+        res.status(200).json({ message: 'Event updated successfully', event });
+    } catch (error) {
+        res.status(500).json({ message: 'Server Error', error: error.message });
+    }
+});
+
+// DELETE: Delete Event
+router.delete('/:id', async (req, res) => {
+    try {
+        const event = await HealthEvent.findByIdAndDelete(req.params.id);
+        if (!event) return res.status(404).json({ message: 'Event not found.' });
+        res.status(200).json({ message: 'Event deleted successfully' });
+    } catch (error) {
+        res.status(500).json({ message: 'Server Error', error: error.message });
+    }
+});
+
 // POST: Register for Event
 router.post('/:id/register', async (req, res) => {
     try {

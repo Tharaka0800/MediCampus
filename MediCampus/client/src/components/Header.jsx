@@ -16,7 +16,7 @@ export default function Header({ role = 'student', userName = '' }) {
     ],
     admin: [
       { path: '/admin/queue', label: 'Queue Console' },
-      { path: '/admin/queue', label: 'Dashboard' },
+      { path: '/admin/events', label: 'Manage Events' },
     ],
   };
 
