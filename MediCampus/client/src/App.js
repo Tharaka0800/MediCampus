@@ -10,6 +10,7 @@ import DoctorDashboard from './pages/DoctorDashboard';
 import CertificateVerify from './pages/CertificateVerify';
 import EventPortal from './pages/EventPortal';
 import EmergencyCenter from './pages/EmergencyCenter';
+import AdminEventsDashboard from './pages/AdminEventsDashboard';
 import { ProfileProvider } from './context/ProfileContext';
 import CertificateDocument from './pages/CertificateDocument';
 import './App.css';
@@ -36,6 +37,7 @@ function App() {
             {/* Admin Routes */}
             <Route path="/admin/queue" element={<AdminQueueConsole />} />
             <Route path="/admin/login" element={<AdminQueueConsole />} />
+            <Route path="/admin/events" element={<AdminEventsDashboard />} />
 
             {/* Public Routes */}
             <Route path="/queue/public" element={<PublicQueueDisplay />} />
