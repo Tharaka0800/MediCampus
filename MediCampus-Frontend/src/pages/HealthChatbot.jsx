@@ -361,10 +361,10 @@ export default function HealthChatbot({ profile }) {
 
   const getSystemPrompt = () => {
     const defaultProfile = {
-       name: "Student",
-       blood: "Unknown",
-       allergies: "None",
-       conditions: "None"
+      name: "Student",
+      blood: "Unknown",
+      allergies: "None",
+      conditions: "None"
     };
 
     const pName = profile?.studentName || defaultProfile.name;
@@ -394,7 +394,7 @@ export default function HealthChatbot({ profile }) {
   const requestAnthropicAPI = async (userText) => {
     // Attempting to use a proxy or direct fetch - if not configured, we'll respond with a realistic AI default mock 
     // In a real environment, this calls the backend securely. We implement the direct fetch for demo purposes if process.env holds it
-    
+
     const API_KEY = process.env.REACT_APP_ANTHROPIC_API_KEY || "dummy"; // Dummy fallback if not in env
     const messagesPayload = messages.filter(m => m.role !== 'system').map(m => ({
       role: m.role,
@@ -424,10 +424,10 @@ export default function HealthChatbot({ profile }) {
           const data = await response.json();
           return data.content[0].text;
         } else {
-           console.warn("Anthropic API returned error:", await response.text());
+          console.warn("Anthropic API returned error:", await response.text());
         }
       }
-      
+
       // FALLBACK MOCK IF API FAILS OR NO KEY (to guarantee an optimal working demo)
       return generateMockResponse(userText);
 
@@ -442,23 +442,23 @@ export default function HealthChatbot({ profile }) {
       setTimeout(() => {
         let reply = "I'm sorry, I couldn't quite understand that. Could you describe your symptoms in more detail?";
         const pAllergies = (profile?.allergies || "").toLowerCase();
-        
+
         if (text.toLowerCase().includes("penicillin")) {
-           if (pAllergies.includes("penicillin")) {
-              reply = "🚨 **WARNING!** Based on your health profile, you are allergic to Penicillin! **Do not take Penicillin** as it could trigger a severe allergic reaction (anaphylaxis).\n\nPlease consult the campus clinic for a safe alternative antibiotic.";
-           } else {
-              reply = "While Penicillin is a common antibiotic for bacterial infections, it should only be taken if prescribed by a doctor. Never take leftover antibiotics. Please visit the campus clinic to get a proper diagnosis.";
-           }
+          if (pAllergies.includes("penicillin")) {
+            reply = "🚨 **WARNING!** Based on your health profile, you are allergic to Penicillin! **Do not take Penicillin** as it could trigger a severe allergic reaction (anaphylaxis).\n\nPlease consult the campus clinic for a safe alternative antibiotic.";
+          } else {
+            reply = "While Penicillin is a common antibiotic for bacterial infections, it should only be taken if prescribed by a doctor. Never take leftover antibiotics. Please visit the campus clinic to get a proper diagnosis.";
+          }
         } else if (text.toLowerCase().includes("headache")) {
-           reply = "I see you're experiencing a headache. \n\n**Possible causes:** Stress, dehydration, lack of sleep, or eye strain.\n\n**Recommendations:**\n- Drink a large glass of water.\n- Rest in a quiet, dark room for 20-30 minutes.\n- If you have no medication allergies preventing it, an OTC pain reliever like Paracetamol might help.\n\n*If the headache is unusually severe, sudden, or accompanied by vomiting or vision changes, please visit the emergency room immediately.*";
+          reply = "I see you're experiencing a headache. \n\n**Possible causes:** Stress, dehydration, lack of sleep, or eye strain.\n\n**Recommendations:**\n- Drink a large glass of water.\n- Rest in a quiet, dark room for 20-30 minutes.\n- If you have no medication allergies preventing it, an OTC pain reliever like Paracetamol might help.\n\n*If the headache is unusually severe, sudden, or accompanied by vomiting or vision changes, please visit the emergency room immediately.*";
         } else if (text.toLowerCase().includes("cough")) {
-           const pConditions = (profile?.chronicIllnesses || "").toLowerCase();
-           reply = "A cough can be troublesome. Is it a dry cough or are you producing phlegm? ";
-           if (pConditions.includes("asthma")) {
-             reply += "\n\n⚠️ I noticed you have **Asthma** in your profile. A cough can sometimes be a sign that your asthma is flaring up. Make sure your inhaler (e.g., Ventolin) is nearby. If you experience shortness of breath or wheezing, use your inhaler and seek medical attention.";
-           } else {
-             reply += "\n\n**Recommendations:**\n- Stay hydrated with warm fluids.\n- Get plenty of rest.\n- If the cough persists for more than 2 weeks, or you experience chest pain, please see Dr. Syafiqah at the clinic.";
-           }
+          const pConditions = (profile?.chronicIllnesses || "").toLowerCase();
+          reply = "A cough can be troublesome. Is it a dry cough or are you producing phlegm? ";
+          if (pConditions.includes("asthma")) {
+            reply += "\n\n⚠️ I noticed you have **Asthma** in your profile. A cough can sometimes be a sign that your asthma is flaring up. Make sure your inhaler (e.g., Ventolin) is nearby. If you experience shortness of breath or wheezing, use your inhaler and seek medical attention.";
+          } else {
+            reply += "\n\n**Recommendations:**\n- Stay hydrated with warm fluids.\n- Get plenty of rest.\n- If the cough persists for more than 2 weeks, or you experience chest pain, please see Dr. Syafiqah at the clinic.";
+          }
         }
         resolve(reply);
       }, 1500);
@@ -506,7 +506,7 @@ export default function HealthChatbot({ profile }) {
     <>
       <style>{styles}</style>
       <div className="cb-root">
-        
+
         {/* Header */}
         <div className="cb-header">
           <div className="cb-brand">
@@ -526,8 +526,8 @@ export default function HealthChatbot({ profile }) {
           {messages.map((msg, idx) => (
             <div key={idx} className={`cb-msg-row ${msg.role}`}>
               {msg.role === 'assistant' && (
-                <div style={{marginRight: '8px', opacity: 0.8}}>
-                  <div className="cb-bot-avatar" style={{width: 32, height: 32, fontSize: 16, background: '#e2eaeb', borderColor: 'transparent'}}>🤖</div>
+                <div style={{ marginRight: '8px', opacity: 0.8 }}>
+                  <div className="cb-bot-avatar" style={{ width: 32, height: 32, fontSize: 16, background: '#e2eaeb', borderColor: 'transparent' }}>🤖</div>
                 </div>
               )}
               <div className="cb-msg-bubble">
@@ -538,10 +538,10 @@ export default function HealthChatbot({ profile }) {
 
           {isLoading && (
             <div className="cb-msg-row bot">
-               <div style={{marginRight: '8px', opacity: 0.8}}>
-                  <div className="cb-bot-avatar" style={{width: 32, height: 32, fontSize: 16, background: '#e2eaeb', borderColor: 'transparent'}}>🤖</div>
-                </div>
-              <div className="cb-msg-bubble" style={{padding: '16px 20px'}}>
+              <div style={{ marginRight: '8px', opacity: 0.8 }}>
+                <div className="cb-bot-avatar" style={{ width: 32, height: 32, fontSize: 16, background: '#e2eaeb', borderColor: 'transparent' }}>🤖</div>
+              </div>
+              <div className="cb-msg-bubble" style={{ padding: '16px 20px' }}>
                 <div className="cb-typing">
                   <div className="cb-dot"></div>
                   <div className="cb-dot"></div>
@@ -578,9 +578,9 @@ export default function HealthChatbot({ profile }) {
               onKeyDown={handleKeyDown}
               disabled={isLoading}
             />
-            <button 
-              className="cb-send-btn" 
-              onClick={() => handleSend()} 
+            <button
+              className="cb-send-btn"
+              onClick={() => handleSend()}
               disabled={!input.trim() || isLoading}
               aria-label="Send message"
             >
